@@ -7,35 +7,38 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LayoutDashboard, CalendarDays, ChartBarBig, NotebookPen, PlusCircle } from 'lucide-react-native';
 
-import { TaskProvider, TaskContext } from './context/TaskContext';
-import { HabitProvider, HabitContext } from './context/HabitContext';
-import { SkillProvider, SkillContext } from './context/SkillContext';
-import { PlannerProvider, PlannerContext } from './context/PlannerContext';
-import { JournalProvider, JournalContext } from './context/JournalContext';
-import { SettingsProvider, SettingsContext } from './context/SettingsContext';
-import { DailyResetProvider } from './context/DailyResetContext';
-import ErrorBoundary from './components/ErrorBoundary';
-import { useTheme, ThemeProvider } from './utils/theme';
+// ── Shared ──────────────────────────────────────────────────────────────────
+import ErrorBoundary from './shared/components/ErrorBoundary';
+import LoadingScreen from './shared/components/LoadingScreen';
+import { useTheme, ThemeProvider } from './shared/utils/theme';
+import { DailyResetProvider } from './shared/context/DailyResetContext';
+import { runMigrations } from './shared/utils/dataMigration';
 
-import DashboardScreen from './screens/DashboardScreen';
-import TaskListScreen from './screens/TaskListScreen';
-import HabitTrackerScreen from './screens/HabitTrackerScreen';
-import SkillsNavigator from './navigation/SkillsNavigator';
-import PlannerScreen from './screens/PlannerScreen';
-import AnalyticsScreen from './screens/AnalyticsScreen';
-import JournalScreen from './screens/JournalScreen';
-import SettingsScreen from './screens/SettingsScreen';
-import AddScreen from './screens/AddScreen';
-import AddEditTaskScreen from './screens/AddEditTaskScreen';
-import AddEditHabitScreen from './screens/AddEditHabitScreen';
-import AddEditSkillScreen from './screens/AddEditSkillScreen';
-import AddEditBlockScreen from './screens/AddEditBlockScreen';
-import DailyPageScreen from './screens/DailyPageScreen';
-import LogSessionScreen from './screens/LogSessionScreen';
-import BackupScreen from './screens/BackupScreen';
-import LoadingScreen from './components/LoadingScreen';
-import JournalEntryScreen from './screens/JournalEntryScreen';
-import { runMigrations } from './utils/dataMigration';
+// ── Feature Contexts ─────────────────────────────────────────────────────────
+import { TaskProvider, TaskContext } from './features/tasks/context/TaskContext';
+import { HabitProvider, HabitContext } from './features/habits/context/HabitContext';
+import { SkillProvider, SkillContext } from './features/skills/context/SkillContext';
+import { PlannerProvider, PlannerContext } from './features/planner/context/PlannerContext';
+import { JournalProvider, JournalContext } from './features/journal/context/JournalContext';
+import { SettingsProvider, SettingsContext } from './features/settings/context/SettingsContext';
+
+// ── Tab Screens ───────────────────────────────────────────────────────────────
+import DashboardScreen from './features/dashboard/screens/DashboardScreen';
+import PlannerScreen from './features/planner/screens/PlannerScreen';
+import AddScreen from './features/add/screens/AddScreen';
+import AnalyticsScreen from './features/insights/screens/AnalyticsScreen';
+import JournalScreen from './features/journal/screens/JournalScreen';
+
+// ── Stack Screens ─────────────────────────────────────────────────────────────
+import AddEditTaskScreen from './features/tasks/screens/AddEditTaskScreen';
+import AddEditHabitScreen from './features/habits/screens/AddEditHabitScreen';
+import AddEditSkillScreen from './features/skills/screens/AddEditSkillScreen';
+import AddEditBlockScreen from './features/planner/screens/AddEditBlockScreen';
+import DailyPageScreen from './features/planner/screens/DailyPageScreen';
+import LogSessionScreen from './features/skills/screens/LogSessionScreen';
+import SettingsScreen from './features/settings/screens/SettingsScreen';
+import BackupScreen from './features/settings/screens/BackupScreen';
+import JournalEntryScreen from './features/journal/screens/JournalEntryScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -101,7 +104,7 @@ function AppContent() {
       try {
         const { success, migrationsRun } = await runMigrations();
         if (success && migrationsRun > 0) {
-          console.log(`✅ Successfully ran ${migrationsRun} data migrations`);
+          console.log(`Successfully ran ${migrationsRun} data migrations`);
         }
       } catch (error) {
         console.error('Migration error:', error);
