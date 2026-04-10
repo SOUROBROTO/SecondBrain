@@ -1,0 +1,78 @@
+# SecondBrain (formerly TrackMind) - Application Analysis
+
+## 1. Executive Summary
+**SecondBrain** is a comprehensive, offline-first personal productivity and self-improvement application built using React Native and Expo. It serves as an all-in-one digital "second brain," designed to replace multiple disparate apps by combining task management, habit tracking, targeted skill development, daily scheduling (time-blocking), and journaling into a cohesive mobile experience. 
+
+The application heavily emphasizes privacy and local ownership of data, operating entirely via local device storage. Aesthetically, it pursues a modern, minimalist design, supporting dynamic theming with a focus on immersive, distraction-free functionality.
+
+## 2. Tech Stack & Core Libraries
+*   **Core Framework:** React Native (0.81.5) wrapped in Expo SDK (~54.0.33)
+*   **Routing & Navigation:** React Navigation v7 (`@react-navigation/native-stack` for modals/nested flows & `@react-navigation/bottom-tabs` for the main interface)
+*   **State Management:** React Context API (Modular, domain-driven context provider pattern)
+*   **Persistent Storage:** `@react-native-async-storage/async-storage` (Direct local persistence)
+*   **Icons & Assets:** `lucide-react-native` (Minimalist, consistent iconography)
+*   **Data Visualization:** `react-native-chart-kit` for analytics and progress visualization
+*   **System Integrations:** `expo-file-system`, `expo-sharing`, and `expo-document-picker` for exporting, sharing, and importing local data backups.
+*   **Date/Time Handling:** `@react-native-community/datetimepicker` alongside internal utility services.
+
+## 3. Application Architecture
+
+### 3.1 State Management (The Provider Pattern)
+The application avoids heavy external state management libraries (like Redux or Zustand) in favor of multiple, distinct React Context contexts. This organizes state logically by domain. The main application (`App.js`) is wrapped in a large Provider tree:
+
+*   **`SettingsContext` / `ThemeProvider`**: Manages user preferences and UI theming (Light, Dark, Auto modes).
+*   **`TaskContext`**: Manages the CRUD lifecycle for one-off and recurring tasks.
+*   **`HabitContext`**: Handles repeating habits, habit streaks, and completions.
+*   **`SkillContext`**: Manages long-term skill acquisition and logging active learning sessions.
+*   **`PlannerContext`**: Controls daily time-blocks, scheduling, and calendar representations.
+*   **`JournalContext`**: Manages reflection entries and journaling badges.
+*   **`DailyResetContext`**: Monitors rollovers across days, seamlessly resetting daily tracking metrics when a new day arrives.
+
+### 3.2 Navigation Structure
+Navigation relies on a foundational tab structure, overlaid with full-screen or modal stacks for detailed interactions.
+*   **Bottom Tab Navigator (`MainTabNavigator`)**:
+    *   **Dashboard**: A high-level overview or summary of the day.
+    *   **Planner**: A time-blocked view of the user's schedule (`PlannerScreen`).
+    *   **Add**: A central hub to rapidly ingest new data (`AddScreen`).
+    *   **Insights**: Analytics and visualizations (`AnalyticsScreen`).
+    *   **Journal**: Reflections and logs (`JournalScreen`).
+*   **Stack Navigator (Modals/Overlays)**:
+    *   Adding or Editing Entities: `AddEditTask`, `AddEditHabit`, `AddEditSkill`, `AddEditBlock`.
+    *   Deep Dives: `DailyPageScreen`, `LogSessionScreen` (for skills), `JournalEntryScreen`.
+    *   Utilities: `SettingsScreen`, `BackupScreen`.
+
+## 4. Key Functional Modules
+
+### 4.1 Tasks & Habits
+The core of the daily progression. Tasks are handled as distinct actionable items, while habits are tracked systematically to maintain streaks. The state persists locally under the `@trackmind_tasks` and `@trackmind_habits` keys in AsyncStorage, respectively.
+
+### 4.2 Skills Tracking (`LogSessionScreen` & `AddEditSkillScreen`)
+A deeper tracking mechanism designed for "Deep Work". Users can create distinct "Skills" they intend to master and literally log sessions against them. This represents a more dedicated progression system beyond simple habit checking.
+
+### 4.3 Daily Planner & Time Blocking
+Users interact with a time-blocked schedule via `PlannerScreen`. Time slots are managed using `AddEditBlockScreen` allowing users to carve up their day for specific tasks, habits, or discrete blocks of work.
+
+### 4.4 Journaling & Reflections
+The `JournalScreen` provides a space for written reflection. Unique to this feature is the presence of "Journal Badges" (`@trackmind_journal_badges`), implying a gamified or categorize reflection system that tracks patterns or rewards consistent writing. 
+
+### 4.5 Analytics & Dashboards
+The `AnalyticsScreen` leverages `react-native-chart-kit` tying the various domains of data (Tasks finished, Habits hit, Skill hours logged) into comprehensive overviews.
+
+### 4.6 Offline Robustness & Backups
+To accommodate the purely offline nature, a rigorous data backup mechanism (`utils/dataBackup.js`) was crafted using Expo's File System and Sharing tools. Users can export their entire "SecondBrain" as a JSON snapshot, store it externally, and import it later fully restoring all states.
+
+## 5. UI/UX & Design Philosophy
+*   **Minimalist Aesthetic:** Emphasizes high-contrast content with dark mode prioritized (`userInterfaceStyle: "dark"` mapped natively). Rejects visual clutter, pushing the user's data to the forefront.
+*   **Unified Theming:** Everything reacts dynamically to `useTheme()` logic in the active components ensuring cohesive styling.
+*   **Centralized Adding:** The dedicated `Add` tab radically reduces friction by centralizing the creation flow for habits, tasks, timeline blocks, and journal entries.
+
+## 6. Project Directory Schema
+*   **`/assets`**: App icons, adaptive icons, and splash screens for Expo.
+*   **`/components`**: Reusable generic UI elements (Buttons, Lists, Floating Actions, Modal Sheets, Loading utilities, Progress Rings).
+*   **`/context`**: The "Brain" schemas. The global state providers.
+*   **`/navigation`**: Sub-navigators and routing logic configuration.
+*   **`/screens`**: The discrete views containing the core business logic implementations.
+*   **`/utils`**: Pure functions, helpers, validation (`dataValidator.js`), migrations (`dataMigration.js`), time (`DateService.js`), and Local Storage abstraction (`storageHelper.js`).
+
+## 7. Future Perspectives / Maturity
+The codebase indicates a mature, robust V1. With features like `dataMigration.js`, it is built for long-term use and capable of evolving data schemas without breaking user installs. Combining typical habit-tracking with advanced skill-logging and full journaling bridges the gap between a superficial checklist and an actual "Second Brain".
