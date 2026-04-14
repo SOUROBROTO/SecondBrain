@@ -15,8 +15,8 @@ import { AppState } from 'react-native';
 import { loadData, saveData, STORAGE_KEYS } from '../utils/storageHelper';
 import { getTodayKey } from '../utils/DateService';
 import { runDailyReset } from '../utils/DailyReset';
-import { HabitContext } from './HabitContext';
-import { TaskContext } from './TaskContext';
+import { HabitContext } from '../../features/habits/context/HabitContext';
+import { TaskContext } from '../../features/tasks/context/TaskContext';
 
 export const DailyResetContext = createContext({
     lastResetDate: null,
@@ -103,7 +103,12 @@ export const DailyResetProvider = ({ children }) => {
     }, [maybeRunReset]);
 
     return (
-        <DailyResetContext.Provider value={{}}>
+        <DailyResetContext.Provider
+            value={{
+                lastResetDate: lastResetDateRef.current,
+                isResetting: isResettingRef.current,
+            }}
+        >
             {children}
         </DailyResetContext.Provider>
     );

@@ -22,16 +22,19 @@ import { v4 as uuidv4 } from 'uuid';
  * Compute the correct streak for a habit at the start of a new day.
  *
  * Rules:
- *   - If lastCompletionDate was yesterday → increment streak
- *   - If lastCompletionDate was today (shouldn't normally happen on reset) → keep
+ *   - If lastCompletionDate was yesterday or today → keep current streak
  *   - Anything older → streak resets to 0
+ *
+ * NOTE:
+ *   Streak increments happen in HabitContext when the user logs today.
+ *   Daily reset only validates whether the existing streak is still valid.
  */
 export const computeStreak = (habit, todayKey) => {
     const yesterdayKey = getYesterdayKey();
     const lcd = habit.lastCompletionDate; // YYYY-MM-DD or null/undefined
 
     if (!lcd) return 0;
-    if (lcd === yesterdayKey) return (habit.streak || 0) + 1;
+    if (lcd === yesterdayKey) return habit.streak || 0;
     if (lcd === todayKey) return habit.streak || 0; // already logged today before reset ran
     return 0; // missed a day → broken streak
 };

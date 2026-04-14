@@ -43,6 +43,28 @@ import JournalEntryScreen from './features/journal/screens/JournalEntryScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+function AppProviders({ children }) {
+  return (
+    <SettingsProvider>
+      <ThemeProvider>
+        <TaskProvider>
+          <HabitProvider>
+            <SkillProvider>
+              <PlannerProvider>
+                <JournalProvider>
+                  <DailyResetProvider>
+                    {children}
+                  </DailyResetProvider>
+                </JournalProvider>
+              </PlannerProvider>
+            </SkillProvider>
+          </HabitProvider>
+        </TaskProvider>
+      </ThemeProvider>
+    </SettingsProvider>
+  );
+}
+
 function MainTabNavigator() {
   const { C } = useTheme();
   return (
@@ -144,23 +166,9 @@ export default function App() {
     <ErrorBoundary>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
-          <SettingsProvider>
-            <ThemeProvider>
-              <TaskProvider>
-                <HabitProvider>
-                  <SkillProvider>
-                    <PlannerProvider>
-                      <JournalProvider>
-                        <DailyResetProvider>
-                          <AppContent />
-                        </DailyResetProvider>
-                      </JournalProvider>
-                    </PlannerProvider>
-                  </SkillProvider>
-                </HabitProvider>
-              </TaskProvider>
-            </ThemeProvider>
-          </SettingsProvider>
+          <AppProviders>
+            <AppContent />
+          </AppProviders>
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </ErrorBoundary>

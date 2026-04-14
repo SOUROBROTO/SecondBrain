@@ -25,11 +25,22 @@ export const SkillProvider = ({ children }) => {
 
     // ─── Transactional Save ──────────────────────────────────────────────────
     const updateSkills = useCallback((updaterFn) => {
+        let nextSkills = null;
         setSkills(prev => {
-            const next = updaterFn(prev);
-            saveData(STORAGE_KEYS.SKILLS, next);
-            return next;
+            nextSkills = updaterFn(prev);
+            return nextSkills;
         });
+
+        Promise.resolve()
+            .then(async () => {
+                const success = await saveData(STORAGE_KEYS.SKILLS, nextSkills);
+                if (!success) {
+                    console.error('Failed to persist skills update');
+                }
+            })
+            .catch((error) => {
+                console.error('Unexpected error while saving skills:', error);
+            });
     }, []);
 
     // ─── CRUD ────────────────────────────────────────────────────────────────

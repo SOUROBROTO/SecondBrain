@@ -1,4 +1,4 @@
-﻿import React, { createContext, useState, useEffect, useCallback, useRef } from 'react';
+﻿import React, { createContext, useState, useEffect, useCallback } from 'react';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { saveData, loadData, STORAGE_KEYS } from '../../../shared/utils/storageHelper';
@@ -9,10 +9,6 @@ export const HabitContext = createContext();
 export const HabitProvider = ({ children }) => {
     const [habits, setHabits] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    // Keep a ref so async callbacks always see latest habits without stale closure
-    const habitsRef = useRef(habits);
-    useEffect(() => { habitsRef.current = habits; }, [habits]);
 
     // ─── Load ────────────────────────────────────────────────────────────────
     useEffect(() => {
@@ -29,11 +25,22 @@ export const HabitProvider = ({ children }) => {
     //   • setState and AsyncStorage are always in sync (no race condition)
     //   • A single place to add logging / error recovery later
     const updateHabits = useCallback((updaterFn) => {
+        let nextHabits = null;
         setHabits(prev => {
-            const next = updaterFn(prev);
-            saveData(STORAGE_KEYS.HABITS, next); // fire-and-forget is fine here
-            return next;
+            nextHabits = updaterFn(prev);
+            return nextHabits;
         });
+
+        Promise.resolve()
+            .then(async () => {
+                const success = await saveData(STORAGE_KEYS.HABITS, nextHabits);
+                if (!success) {
+                    console.error('Failed to persist habits update');
+                }
+            })
+            .catch((error) => {
+                console.error('Unexpected error while saving habits:', error);
+            });
     }, []);
 
     // ─── CRUD ────────────────────────────────────────────────────────────────

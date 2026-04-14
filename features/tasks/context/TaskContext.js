@@ -22,11 +22,22 @@ export const TaskProvider = ({ children }) => {
 
     // ─── Transactional Save ──────────────────────────────────────────────────
     const updateTasks = useCallback((updaterFn) => {
+        let nextTasks = null;
         setTasks(prev => {
-            const next = updaterFn(prev);
-            saveData(STORAGE_KEYS.TASKS, next);
-            return next;
+            nextTasks = updaterFn(prev);
+            return nextTasks;
         });
+
+        Promise.resolve()
+            .then(async () => {
+                const success = await saveData(STORAGE_KEYS.TASKS, nextTasks);
+                if (!success) {
+                    console.error('Failed to persist tasks update');
+                }
+            })
+            .catch((error) => {
+                console.error('Unexpected error while saving tasks:', error);
+            });
     }, []);
 
     // ─── CRUD ────────────────────────────────────────────────────────────────
