@@ -4,7 +4,6 @@ import {
     Animated, PanResponder, Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -12,7 +11,6 @@ export const BLOCK_META = {
     task: {
         icon: 'checkmark-circle-outline',
         label: 'Task',
-        gradient: ['#4c669f', '#3b5998'],
         accent: '#6C8EEF',
         bg: 'rgba(76, 102, 159, 0.12)',
         border: 'rgba(76, 102, 159, 0.3)',
@@ -20,7 +18,6 @@ export const BLOCK_META = {
     habit: {
         icon: 'repeat',
         label: 'Habit',
-        gradient: ['#30D158', '#26a044'],
         accent: '#30D158',
         bg: 'rgba(48, 209, 88, 0.1)',
         border: 'rgba(48, 209, 88, 0.25)',
@@ -28,7 +25,6 @@ export const BLOCK_META = {
     skill: {
         icon: 'trophy-outline',
         label: 'Skill',
-        gradient: ['#BF5AF2', '#9b49c5'],
         accent: '#BF5AF2',
         bg: 'rgba(191, 90, 242, 0.1)',
         border: 'rgba(191, 90, 242, 0.25)',
@@ -36,7 +32,6 @@ export const BLOCK_META = {
     text: {
         icon: 'document-text-outline',
         label: 'Note',
-        gradient: ['#636366', '#48484a'],
         accent: '#8E8E93',
         bg: 'rgba(99, 99, 102, 0.08)',
         border: 'rgba(99, 99, 102, 0.2)',
@@ -44,7 +39,6 @@ export const BLOCK_META = {
     checklist: {
         icon: 'list-outline',
         label: 'Checklist',
-        gradient: ['#FF9F0A', '#e8890a'],
         accent: '#FF9F0A',
         bg: 'rgba(255, 159, 10, 0.1)',
         border: 'rgba(255, 159, 10, 0.25)',
@@ -52,7 +46,6 @@ export const BLOCK_META = {
     divider: {
         icon: 'remove-outline',
         label: 'Divider',
-        gradient: ['#3a3a3c', '#2c2c2e'],
         accent: '#48484a',
         bg: 'transparent',
         border: 'transparent',
@@ -60,7 +53,6 @@ export const BLOCK_META = {
     toggle: {
         icon: 'chevron-forward-outline',
         label: 'Toggle',
-        gradient: ['#64D2FF', '#32ade6'],
         accent: '#64D2FF',
         bg: 'rgba(100, 210, 255, 0.08)',
         border: 'rgba(100, 210, 255, 0.2)',
@@ -69,7 +61,7 @@ export const BLOCK_META = {
 
 // ─── Color Resolver ───────────────────────────────────────────────────────────
 // If block.color is set, override the type-based accent with the custom color.
-// All derived colors (bg, border, gradient) are computed from block.color.
+// All derived colors (bg, border) are computed from block.color.
 
 export const resolveColors = (block) => {
     const blockType = block.blockType || block.type || 'task';
@@ -77,20 +69,9 @@ export const resolveColors = (block) => {
     const custom = block.color;
     if (!custom) return base;
 
-    // Derive a slightly darker shade for gradient end
-    const darken = (hex) => {
-        try {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgb(${Math.max(0, r - 40)},${Math.max(0, g - 40)},${Math.max(0, b - 40)})`;
-        } catch { return hex; }
-    };
-
     return {
         ...base,
         accent: custom,
-        gradient: [custom, darken(custom)],
         bg: `${custom}1A`,
         border: `${custom}44`,
     };
@@ -281,12 +262,7 @@ export default function PlannerBlockItem({ block, onPress, onDelete, onUpdate, s
             activeOpacity={0.85}
         >
             <View style={styles.blockLeft}>
-                <LinearGradient
-                    colors={Array.isArray(meta.gradient) ? meta.gradient : [meta.accent, meta.accent]}
-                    style={styles.blockTypeBar}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                />
+                <View style={[styles.blockTypeBar, { backgroundColor: meta.accent }]} />
             </View>
             <View style={styles.blockContent}>
                 <View style={styles.blockHeader}>

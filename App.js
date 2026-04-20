@@ -51,12 +51,13 @@ function MainTabNavigator() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: C.surface,
-          borderTopColor: C.borderMed,
+          borderTopColor: C.border,
           borderTopWidth: 1,
-          height: 64,
-          paddingTop: 4,
-          paddingBottom: 8,
+          height: 52,
+          paddingTop: 2,
+          paddingBottom: 4,
         },
+        tabBarShowLabel: false,
         tabBarActiveTintColor: C.text,
         tabBarInactiveTintColor: C.textMuted,
         tabBarIcon: ({ focused, color }) => {
@@ -72,12 +73,6 @@ function MainTabNavigator() {
             return <NotebookPen size={21} color={color} strokeWidth={focused ? 2 : 1.5} />;
           }
           return null;
-        },
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '500',
-          letterSpacing: 0.2,
-          marginBottom: 2,
         },
       })}
     >

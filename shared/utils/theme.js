@@ -32,21 +32,21 @@ const LIGHT = {
 };
 
 const DARK = {
-    black: '#191919',
+    black: '#0d0d0d',
     white: '#FFFFFF',
-    surface: '#191919',
-    surface2: '#202020',
-    surface3: '#252525',
-    text: '#FFFFFF',
-    textSub: 'rgba(255, 255, 255, 0.65)',
+    surface: '#171717',
+    surface2: '#1f1f1f',
+    surface3: '#242424',
+    text: '#ececec',
+    textSub: '#8e8ea0',
     textMuted: 'rgba(255, 255, 255, 0.5)',
     textDisabled: 'rgba(255, 255, 255, 0.3)',
-    border: 'rgba(255, 255, 255, 0.09)',
-    borderMed: 'rgba(255, 255, 255, 0.16)',
+    border: 'rgba(255,255,255,0.08)',
+    borderMed: 'rgba(255,255,255,0.08)',
     borderStrong: 'rgba(255, 255, 255, 0.25)',
-    accent: '#2383E2',
-    accentBg: 'rgba(35, 131, 226, 0.15)',
-    accentBgMed: 'rgba(35, 131, 226, 0.25)',
+    accent: '#10a37f',
+    accentBg: 'rgba(16, 163, 127, 0.15)',
+    accentBgMed: 'rgba(16, 163, 127, 0.25)',
     danger: '#E03E3E',
     dangerBg: 'rgba(224, 62, 62, 0.15)',
     success: '#0F7B6C',
@@ -91,15 +91,15 @@ export const ThemeProvider = ({ children }) => {
     const C = isDarkTheme ? DARK : LIGHT;
 
     const T = {
-        h1: { fontSize: 40, fontWeight: '700', letterSpacing: -0.8, color: C.text },
-        h2: { fontSize: 30, fontWeight: '600', letterSpacing: -0.5, color: C.text },
-        h3: { fontSize: 24, fontWeight: '600', letterSpacing: -0.3, color: C.text },
+        h1: { fontSize: 20, fontWeight: '700', letterSpacing: -0.3, color: C.text },
+        h2: { fontSize: 20, fontWeight: '600', letterSpacing: -0.2, color: C.text },
+        h3: { fontSize: 20, fontWeight: '600', letterSpacing: -0.2, color: C.text },
         h4: { fontSize: 20, fontWeight: '600', letterSpacing: -0.2, color: C.text },
-        h5: { fontSize: 16, fontWeight: '600', color: C.text },
-        body: { fontSize: 16, fontWeight: '400', color: C.text, lineHeight: 24 },
-        bodySm: { fontSize: 14, fontWeight: '400', color: C.textSub, lineHeight: 20 },
-        label: { fontSize: 12, fontWeight: '500', color: C.textSub },
-        cap: { fontSize: 11, fontWeight: '600', letterSpacing: 0.5, textTransform: 'uppercase', color: C.textMuted },
+        h5: { fontSize: 15, fontWeight: '600', color: C.text },
+        body: { fontSize: 15, fontWeight: '400', color: C.text, lineHeight: 22 },
+        bodySm: { fontSize: 13, fontWeight: '400', color: C.textSub, lineHeight: 18 },
+        label: { fontSize: 13, fontWeight: '500', color: C.textSub },
+        cap: { fontSize: 13, fontWeight: '600', letterSpacing: 0.2, color: C.textMuted },
     };
 
     // If settings haven't loaded, hold render
