@@ -606,17 +606,16 @@ const AddScreen = () => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Content Sections - Horizontal Scrollable */}
+                {/* Content Sections */}
                 <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     style={styles.horizontalScrollContainer}
                     contentContainerStyle={styles.horizontalScrollContent}
                 >
                     {/* Tasks Section */}
                     <View style={styles.sectionCard}>
                         <View style={styles.sectionHeader}>
-                            <Ionicons name="checkmark-circle" size={20} color="#4A90E2" />
+                            <Ionicons name="checkmark-circle" size={20} color="#10a37f" />
                             <Text style={styles.sectionTitle}>Recent Tasks</Text>
                             <Text style={styles.sectionCount}>{tasks.length}</Text>
                         </View>
@@ -636,7 +635,7 @@ const AddScreen = () => {
                     {/* Habits Section */}
                     <View style={styles.sectionCard}>
                         <View style={styles.sectionHeader}>
-                            <Ionicons name="repeat" size={20} color="#66BB6A" />
+                            <Ionicons name="repeat" size={20} color="#10a37f" />
                             <Text style={styles.sectionTitle}>Recent Habits</Text>
                             <Text style={styles.sectionCount}>{habits.length}</Text>
                         </View>
@@ -656,7 +655,7 @@ const AddScreen = () => {
                     {/* Skills Section */}
                     <View style={styles.sectionCard}>
                         <View style={styles.sectionHeader}>
-                            <Ionicons name="school" size={20} color="#AB47BC" />
+                            <Ionicons name="school" size={20} color="#10a37f" />
                             <Text style={styles.sectionTitle}>Recent Skills</Text>
                             <Text style={styles.sectionCount}>{skills.length}</Text>
                         </View>
@@ -726,14 +725,14 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     sectionCard: {
-        width: 320,
-        marginRight: 16,
+        width: '100%',
+        marginRight: 0,
+        marginBottom: 12,
         backgroundColor: '#1A1A1A',
-        borderRadius: 16,
-        padding: 16,
+        borderRadius: 8,
+        padding: 12,
         borderWidth: 1,
         borderColor: '#2A2A2A',
-        height: '100%',
     },
     sectionContent: {
         flex: 1,

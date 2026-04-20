@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { PlannerContext } from '../context/PlannerContext';
 import { TaskContext } from '../../tasks/context/TaskContext';
 import { HabitContext } from '../../habits/context/HabitContext';
@@ -130,12 +129,7 @@ const TimelineView = ({ blocks, onBlockPress, onBlockDelete, date, navigation })
                             }}
                             activeOpacity={0.85}
                         >
-                            <LinearGradient
-                                colors={Array.isArray(meta.gradient) ? meta.gradient : [meta.accent, meta.accent]}
-                                style={styles.timelineBlockAccent}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 0, y: 1 }}
-                            />
+                            <View style={[styles.timelineBlockAccent, { backgroundColor: meta.accent }]} />
                             <View style={styles.timelineBlockContent}>
                                 <Text style={[styles.timelineBlockTitle, height < 36 && { fontSize: 11 }]} numberOfLines={1}>
                                     {block.title || 'Untitled'}
@@ -154,7 +148,7 @@ const TimelineView = ({ blocks, onBlockPress, onBlockDelete, date, navigation })
             {/* Free blocks below timeline */}
             {blocks.filter(b => !b.startTime || !b.endTime).length > 0 && (
                 <View style={styles.freeBlocksSection}>
-                    <Text style={styles.sectionLabel}>FREE BLOCKS</Text>
+                    <Text style={styles.sectionLabel}>Free blocks</Text>
                     {blocks.filter(b => !b.startTime || !b.endTime).map(block => (
                         <PlannerBlockItem
                             key={block.id}
@@ -188,16 +182,11 @@ const DailyPageView = ({ blocks, date, onBlockPress, onBlockDelete, onBlockUpdat
         >
             {/* Daily Focus */}
             <View style={styles.focusCard}>
-                <LinearGradient
-                    colors={['#1C1C2E', '#121228']}
-                    style={styles.focusGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
+                <View style={styles.focusGradient}>
                     <View style={styles.focusRow}>
                         <View style={styles.focusLeft}>
-                            <Text style={styles.focusLabel}>DAILY FOCUS</Text>
-                            <Text style={styles.focusValue}>{date === today ? '✦ Stay consistent' : '✦ Plan your day'}</Text>
+                            <Text style={styles.focusLabel}>Daily focus</Text>
+                            <Text style={styles.focusValue}>{date === today ? 'Stay consistent' : 'Plan your day'}</Text>
                         </View>
                         <View style={styles.scoreCircle}>
                             <Text style={styles.scoreNumber}>{productivity}</Text>
@@ -208,7 +197,7 @@ const DailyPageView = ({ blocks, date, onBlockPress, onBlockDelete, onBlockUpdat
                         <Animated.View style={[styles.progressBarFill, { width: `${productivity}%` }]} />
                     </View>
                     <Text style={styles.progressLabel}>{blocks.length} block{blocks.length !== 1 ? 's' : ''} today</Text>
-                </LinearGradient>
+                </View>
             </View>
 
             {/* Timed blocks */}
@@ -216,7 +205,7 @@ const DailyPageView = ({ blocks, date, onBlockPress, onBlockDelete, onBlockUpdat
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderRow}>
                         <Ionicons name="time-outline" size={14} color="#555" />
-                        <Text style={styles.sectionLabel}>SCHEDULED</Text>
+                        <Text style={styles.sectionLabel}>Scheduled</Text>
                     </View>
                     {blocks.filter(b => b.startTime && b.endTime).map(block => (
                         <PlannerBlockItem
@@ -235,7 +224,7 @@ const DailyPageView = ({ blocks, date, onBlockPress, onBlockDelete, onBlockUpdat
                 <View style={styles.section}>
                     <View style={styles.sectionHeaderRow}>
                         <Ionicons name="layers-outline" size={14} color="#555" />
-                        <Text style={styles.sectionLabel}>FREE BLOCKS</Text>
+                        <Text style={styles.sectionLabel}>Free blocks</Text>
                     </View>
                     {blocks.filter(b => !b.startTime || !b.endTime).map(block => (
                         <PlannerBlockItem
@@ -252,7 +241,6 @@ const DailyPageView = ({ blocks, date, onBlockPress, onBlockDelete, onBlockUpdat
             {/* Empty state */}
             {blocks.length === 0 && (
                 <View style={styles.emptyPage}>
-                    <Text style={styles.emptyEmoji}>📋</Text>
                     <Text style={styles.emptyTitle}>Empty page</Text>
                     <Text style={styles.emptySubtitle}>Tap '+' to add your first block for this day</Text>
                     <TouchableOpacity style={styles.addFirstBlock} onPress={onAddBlock}>
@@ -273,7 +261,6 @@ const ListView = ({ allBlocks, dates, onBlockPress, onBlockDelete }) => {
     if (allBlocks.length === 0) {
         return (
             <View style={styles.emptyPage}>
-                <Text style={styles.emptyEmoji}>🗂️</Text>
                 <Text style={styles.emptyTitle}>No blocks yet</Text>
                 <Text style={styles.emptySubtitle}>Block items will appear here</Text>
             </View>
@@ -487,14 +474,9 @@ export default function DailyPageScreen({ route, navigation }) {
                 onPress={() => setShowAddSheet(true)}
                 activeOpacity={0.9}
             >
-                <LinearGradient
-                    colors={['#5673cf', '#4c669f']}
-                    style={styles.fabGradient}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
+                <View style={styles.fabGradient}>
                     <Ionicons name="add" size={26} color="#fff" />
-                </LinearGradient>
+                </View>
             </TouchableOpacity>
 
             {/* ── Add Block Sheet ── */}

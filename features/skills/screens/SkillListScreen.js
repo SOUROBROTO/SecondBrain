@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert, Platform } f
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SkillContext } from '../context/SkillContext';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import DeleteButton from '../../../shared/components/DeleteButton';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,11 +34,9 @@ export default function SkillListScreen() {
             <TouchableOpacity
                 onPress={() => navigation.navigate('SkillDetail', { skillId: item.id })}
                 activeOpacity={0.8}
+                style={styles.cardSurface}
             >
-                <LinearGradient
-                    colors={['#333', '#1E1E1E']}
-                    style={styles.cardGradient}
-                >
+                <View style={styles.cardGradient}>
                     <View style={styles.cardHeader}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                             <Text style={styles.skillName}>{item.name}</Text>
@@ -62,7 +59,7 @@ export default function SkillListScreen() {
                         <Ionicons name="time-outline" size={14} color="#888" />
                         <Text style={styles.timeText}>{Math.floor(item.timeSpent / 60)}h {item.timeSpent % 60}m spent</Text>
                     </View>
-                </LinearGradient>
+                </View>
             </TouchableOpacity>
             <View style={styles.deleteOverlay}>
                 <DeleteButton
@@ -142,16 +139,13 @@ const styles = StyleSheet.create({
         right: 30,
         width: 60,
         height: 60,
-        borderRadius: 30,
-        backgroundColor: '#4c669f',
+        borderRadius: 8,
+        backgroundColor: '#10a37f',
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
         zIndex: 100,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.08)',
     },
     emptyContainer: {
         alignItems: 'center',
@@ -169,11 +163,17 @@ const styles = StyleSheet.create({
     },
     card: {
         marginBottom: 16,
-        borderRadius: 16,
+        borderRadius: 8,
         overflow: 'hidden',
     },
+    cardSurface: {
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.08)',
+        borderRadius: 8,
+    },
     cardGradient: {
-        padding: 16,
+        padding: 12,
+        backgroundColor: '#1a1a1a',
     },
     cardHeader: {
         flexDirection: 'row',
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     badge: {
-        backgroundColor: '#4c669f',
+        backgroundColor: '#10a37f',
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 8,

@@ -4,7 +4,6 @@ import {
     Animated, Dimensions, ScrollView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { BLOCK_META } from './PlannerBlockItem';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -126,14 +125,9 @@ export default function AddBlockSheet({ visible, onClose, onSelectType }) {
                                     onPress={() => handleSelect(opt.type)}
                                     activeOpacity={0.8}
                                 >
-                                    <LinearGradient
-                                        colors={meta.gradient}
-                                        style={styles.optionIcon}
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 1 }}
-                                    >
+                                    <View style={[styles.optionIcon, { backgroundColor: meta.accent }]}>
                                         <Ionicons name={opt.icon} size={20} color="#fff" />
-                                    </LinearGradient>
+                                    </View>
                                     <View style={styles.optionText}>
                                         <Text style={styles.optionTitle}>{opt.title}</Text>
                                         <Text style={styles.optionDesc}>{opt.desc}</Text>
@@ -156,9 +150,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     sheet: {
-        backgroundColor: '#161616',
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
+        backgroundColor: '#171717',
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
         paddingBottom: 40,
         maxHeight: SCREEN_HEIGHT * 0.75,
         borderTopWidth: 1,
@@ -212,8 +206,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#1E1E1E',
-        borderRadius: 12,
-        padding: 14,
+        borderRadius: 8,
+        padding: 12,
         marginBottom: 8,
         borderWidth: 1,
         borderColor: 'rgba(249,249,249,0.06)',
@@ -240,4 +234,3 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 });
-
